@@ -1,44 +1,75 @@
-# Semestrální práce SIN
-### Dominik Dvořáček
+# Central library spring boot
 
-## Povinná část
-- BO layer (`package entity`)
-    - UML class diagram ve složce `/doc`
-- Repository (`package repository`)
-- Service layer (`package service`)
-    - Sequence diagram ve složce `/doc/sequence-diagrams`
-- Controller layer (`package controller`)
-    - REST controller
+The system manages libraries, books, publishers, and authors.
 
-## Volitelná část (8 bodů)
-- testy unit kazda trida na service layer a controller layer (`test.java.cvut.fel`)
-- design patternu alespon 6
-    - Builder: `dto.request.BookCreate`
-        - realizováno pomocí lombok `@Builder` anotace
-    - Singleton: `test.java.cvut.fel.utils.Generator`
-    - Chain of responsibility: `controller.interceptors`
-      - realizováno pomocí implementace interceptoru: metoda preHandle je jeden z 
-        článků chain of responsibility zpravávajícího http request
-    - Strategy: `controller.interceptors`
-      - interceptor pro logování byl doplněn o výběr strategie logování.
-        K dispozici jsou dvě strategie - Detailed a Short. Přepínání mezi strategiemi se provádí
-        v `application.properties` změnou atributu `requestLogging.detail`
-    - Prototype: `package dto`
-      - dto třídy implementují návrhový vzor prototype
-    - Facade: `repository.SaveEntityFascade`
-        - Třida která seskupuje save metody všech repository. Tyto metody byly hojně využívány při adhoc testování 
-          funkcí aplikace, proto byla vytvořena fasáda, který odbourává nutnost injektace jednotlivých repository.
-- interceptor (`controller.interceptors`)
-    - logování zpracování requestu serverem
-- další dokumentace UML: diagram nasazení, package diagram (složka `/doc`)
-- statická analýza kódu (FindBugs) složka `find-bugs`
-    - výpis pred opravou chyb, výpis po opravení chyb
-- Springfox (`config.SpringFoxConfig`)
-    - Springfox Swagger: http://localhost:8080/swagger-ui/
-- Javadoc cele aplikace (složka `/javadoc`)
-- mapstruct, convertory, DTO vrstva (`package dto`)
+---
 
-### Resources
-Article link :  https://www.mkyong.com/spring-boot/spring-boot-spring-data-jpa/  
-Interceptors :  https://www.baeldung.com/spring-mvc-handlerinterceptor  
-EAR eshop :     https://gitlab.fel.cvut.cz/ear/b211-eshop/-/tree/main/  
+## Overview
+
+The system provides the following core functionalities:
+
+- **Library Management:**  
+  Maintain libraries with names, addresses, and inventories of books.  
+
+- **Book Catalog:**  
+  - Each book is uniquely identified by its ISBN.
+  - Books have titles, authors, publishers, publication dates, genres, etc.
+  - On adding a new book, the system verifies that the ISBN is unique and that the specified author has an existing contract with the publisher.
+
+- **Publisher Management:**  
+  Tracks publisher details including name, address, published books, and the authors they contract with.
+
+- **Author Management:**  
+  Stores author details (first name, last name, e-mail) and manages their contracts with various publishers.
+
+---
+
+## Implemented Exercises
+
+### Exercise 1 – Project Setup & UML Modeling
+- **Environment Setup:**  
+  Configured IntelliJ IDEA, JDK 8+, Maven, and Git.
+- **Project Initialization:**  
+  Created a Maven project using [Spring Boot Initializr](https://start.spring.io/).
+- **UML Class Diagram:**  
+  Designed a UML class diagram to model the data structure of libraries, books, publishers, and authors.
+
+---
+
+### Exercise 2 – Domain Model & Data Access Layer
+- **ORM Implementation:**  
+  Implemented the object-relational mapping (ORM) using JPA.
+- **Entity Creation:**  
+  Created Java classes for Library, Book, Publisher, and Author with appropriate attributes, getters/setters (using Lombok), and relationships (1:N, N:M, 1:1).
+- **Data Integrity:**  
+  Ensured uniqueness of ISBNs and validated contracts between authors and publishers using Bean Validation (e.g., `@NotNull`).
+- **DAO/Repository Layer:**  
+  Developed a CRUD repository layer for data operations.
+
+---
+
+### Exercise 3 – Service Layer & System Operations
+- **Business Logic:**  
+  Implemented core business services:
+  - **Author Contracting:** Allowing an author to sign a contract with a publisher.
+  - **Book Publishing:** Enabling a publisher to release a new book.
+  - **Library Book Addition:** Managing the process of adding a book to a library.
+- **UML Sequence Diagrams:**  
+  Documented the system operations with UML sequence diagrams.
+- **Service Implementation:**  
+  Built the service layer with interfaces and implementations, including comprehensive logging (error, warning, debug, info, trace).
+- **Testing:**  
+  Tested service methods using JUnit.
+---
+
+## Technologies Used
+
+- **Java 8+**
+- **Spring Boot**
+- **Maven**
+- **JPA / Hibernate**
+- **H2** 
+- **IntelliJ IDEA**
+
+---
+
